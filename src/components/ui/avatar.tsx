@@ -45,7 +45,7 @@ const AvatarFallback = React.forwardRef<
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
 interface AvatarComponentProps {
-  src?: string | ImageMetadata
+  src?: string
   alt?: string
   fallback?: string
   className?: string
