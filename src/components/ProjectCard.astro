@@ -23,7 +23,7 @@ const { project } = Astro.props
       class="w-full object-cover"
     />
     <div class="p-4">
-      <h3 class="mb-2 text-lg font-semibold">{project.data.name}</h3>
+      <h3 class="flex justify-between mb-2 text-lg font-semibold">{project.data.name} <span class="text-sm font-light text-muted-foreground">{project.data.year}</span></h3>
       <p class="mb-4 text-sm text-muted-foreground">
         {project.data.description}
       </p>

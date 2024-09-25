@@ -40,6 +40,7 @@ const projects = defineCollection({
           'The image must be exactly 1200px × 630px for Open Graph requirements.',
       }),
       link: z.string().url(),
+      year: z.number().min(1990).optional(),
     }),
 })
 
