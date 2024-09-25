@@ -1,8 +1,12 @@
 ---
 import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import Container from '@/components/Container.astro'
+import ProjectCard from '@/components/ProjectCard.astro'
 import { SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+
+const projects = await getCollection('projects')
 ---
 
 <Layout title="About" description={SITE.DESCRIPTION}>
@@ -11,11 +15,10 @@ import Layout from '@/layouts/Layout.astro'
 
     <section>
       <div class="min-w-full">
-        <h1 class="mb-4 text-3xl font-bold">So what's your deal?</h1>
-        <p class="prose prose-neutral mb-8 dark:prose-invert">
-          I've been a software engineer since 2016, a Chicagoan since 2022, and a nerd since back in the day, champ.
-          I'm happily married with several plants, and occasionally I make things other than dinner. This is one of them.
-        </p>
+        <h2 class="mb-4 text-2xl font-semibold">Projects</h2>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project) => <ProjectCard project={project} />)}
+        </div>
       </div>
     </section>
   </Container>

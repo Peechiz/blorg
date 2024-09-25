@@ -1,16 +1,19 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_271_118)">
-<rect width="512" height="74" fill="#CCCCCC"/>
-<rect y="146" width="512" height="74" fill="#CCCCCC"/>
-<rect y="292" width="512" height="74" fill="#CCCCCC"/>
-<rect y="438" width="512" height="74" fill="#CCCCCC"/>
-<rect y="74" width="72" height="72" fill="#CCCCCC"/>
-<rect y="366" width="72" height="72" fill="#CCCCCC"/>
-<rect x="440" y="220" width="72" height="72" fill="#CCCCCC"/>
-</g>
-<defs>
-<clipPath id="clip0_271_118">
-<rect width="512" height="512" fill="white"/>
-</clipPath>
-</defs>
+  <g clip-path="url(#clip0)">
+    <!-- "C" shape on the left -->
+    <rect x="0" y="0" width="128" height="512" fill="#CCCCCC"/>
+    <rect x="0" y="0" width="320" height="220" fill="#CCCCCC"/>
+
+    <rect x="0" y="366" width="320" height="148" fill="#CCCCCC"/>
+    
+    <!-- Vertical bar for the "I" shape -->
+    <rect x="384" y="216" width="128" height="368" fill="#CCCCCC"/>
+    <rect x="384" y="0" width="128" height="144" fill="#CCCCCC"/>
+  </g>
+  
+  <defs>
+    <clipPath id="clip0">
+      <rect width="512" height="512" fill="white"/>
+    </clipPath>
+  </defs>
 </svg>

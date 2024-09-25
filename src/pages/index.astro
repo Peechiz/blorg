@@ -2,6 +2,8 @@
 import BlogCard from '@/components/BlogCard.astro'
 import Container from '@/components/Container.astro'
 import Link from '@/components/Link.astro'
+import AvatarComponent from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
 import {
   Card,
@@ -11,6 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { SITE } from '@/consts'
+import gorilla from '@/images/gorilla.jpg'
 import Layout from '@/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 
@@ -25,50 +28,45 @@ const blog = (await getCollection('blog'))
     <section>
       <Card>
         <CardHeader>
-          <CardTitle className="text-3xl">er·u·dite</CardTitle>
-          <CardDescription
-            >/ˈer(y)əˌdīt/ &bull; <span class="font-semibold">adjective</span
-            ></CardDescription
-          >
+          <div class="flex gap-4">
+            <AvatarComponent
+              client:load
+              src="/static/gorilla.jpg"
+              fallback="CI"
+              alt={'Gorilla'}
+              className="size-16 rounded-full"
+            />
+            <div>
+              <CardTitle className="text-3xl">
+                `<span class="font-light">im</span> ·
+                <span class="font-semibold">peech</span> ·
+                <span class="font-light">ih</span> ·
+                <span class="font-semibold">kay</span>
+              </CardTitle>
+              <CardDescription>
+                It's ok. I don't speak <span class="font-semibold">Italian</span> either
+              </CardDescription>
+            </div>
+          </div>
+
         </CardHeader>
         <CardContent>
-          <p class="mb-2 text-sm text-muted-foreground">
-            astro-erudite is an opinionated, no-frills static blogging template
-            built with <Link
-              href="https://astro.build"
-              class="text-foreground"
-              external
-              underline>Astro</Link
-            >, <Link
-              href="https://tailwindcss.com"
-              class="text-foreground"
-              external
-              underline>Tailwind</Link
-            >, and <Link
-              href="https://ui.shadcn.com"
-              class="text-foreground"
-              external
-              underline>shadcn/ui</Link
-            >. Extraordinarily loosely based on the <Link
-              href="https://astro-micro.vercel.app/"
-              class="text-foreground"
-              external
-              underline>Astro Micro</Link
-            > theme.
-          </p>
-          <p class="text-sm text-muted-foreground">
-            To use this template, check out the <Link
-              href="https://github.com/jktrn/astro-erudite"
-              class="text-foreground"
-              underline
-              external>GitHub</Link
-            > repository. To learn more about why this template exists, read this
-            blog post: <Link
-              href="/blog/the-state-of-static-blogs"
-              class="text-foreground"
-              underline>The State of Static Blogs in 2024</Link
-            >.
-          </p>
+          <div class="flex flex-col gap-2">
+            <!-- <section>
+            </section> -->
+            <section>
+              <Badge showHash={false}>Software Engineer</Badge>
+              <Badge variant="secondary" showHash={false}>Game Dev</Badge>
+              <Badge variant="secondary" showHash={false}>Filmmaker</Badge>
+              <Badge variant="secondary" showHash={false}>Visual Artist</Badge>
+            </section>
+            <section>
+              <Badge variant="outline" showHash={false}>Cooking</Badge>
+              <Badge variant="outline" showHash={false}>Reading</Badge>
+              <Badge variant="outline" showHash={false}>Gaming</Badge>
+              <Badge variant="outline" showHash={false}>D&D</Badge>
+            </section>
+          </div>
         </CardContent>
       </Card>
     </section>

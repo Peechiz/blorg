@@ -132,6 +132,7 @@
         > code {
           @apply whitespace-pre-wrap;
           counter-reset: line;
+          
 
           /* For code blocks with line numbers */
           &[data-line-numbers] {

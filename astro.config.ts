@@ -28,7 +28,9 @@ export default defineConfig({
     sitemap(),
     mdx(),
     react(),
-    icon(),
+    icon({
+      iconDir: 'src/icons',
+    }),
   ],
   markdown: {
     syntaxHighlight: false,

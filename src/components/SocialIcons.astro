@@ -4,6 +4,7 @@ import { buttonVariants } from '@/components/ui/button'
 import type { Link as SocialLink } from '@/consts'
 import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
+import Bluesky from '@icons/bluesky.svg'
 
 interface Props {
   links: SocialLink[]
@@ -16,7 +17,7 @@ const iconMap = {
   Website: 'lucide:globe',
   GitHub: 'lucide:github',
   LinkedIn: 'lucide:linkedin',
-  Twitter: 'lucide:twitter',
+  Bluesky: 'bluesky',
   Email: 'lucide:mail',
   RSS: 'lucide:rss',
 }

@@ -1,0 +1,25 @@
+---
+title: 'Snip Snip'
+description: 'Using CSS clip-path to trim an image'
+date: 2024-09-24
+tags: ['css']
+image: './clippath2.png'
+---
+import { Image } from 'astro:assets'
+import clipPath from '@/images/clippath.png'
+
+## I cropped an image with `clip-path`
+
+This was really fun to figure out, so I added a version of this explanation to my PR. I joked that I'd accidentally written a blog post, so now it's no longer a joke. Anyway, here's how I used `clip-path` to mask off the visible portions of an image from a design I was handed:
+```css
+clip-path: polygon(0 0, 100% 0, calc(100% - 34px) 100%, 0 100%, 0 0)
+```
+In order to explain how I arrived here, it's useful to understand how the css `polygon` util works.
+
+Each argument to the util takes a coordinate in `x, y` space, much like the HTML canvas, where positive values on `x` go to the right, and positive values on `y` go down.  The polygon being created is the blue shape below:
+
+<Image src={clipPath} alt='example of creating a clip-path polygon' />
+
+XY Values can be specified in a fixed units, percentages, rem, even a `calc()` function.  Initially, I described all the values as percentages, with the bottom right corner `X` value being roughly `83%`.  This looked great on Desktop, but since the percentage is weighed against the total width of the element, on mobile where the image was smaller, the cut ended up having a slightly steeper angle.  Instead, I needed to opt for a fixed value that would be the same for mobile & desktop.  I knew that the image would be rendered at roughly 200 pixels wide on Desktop, so `200px * 83% = 166px` from the left, or `200 - 166 = 34px` from the right.
+
+I could have written the 3rd XY point in the polygon as `166px 100%`, but it seemed more explicit to describe the length of the cut itself, not the length of the shortened side of the polygon, so using calc I can write that more explicitly as `calc(100% - 34px)`.
