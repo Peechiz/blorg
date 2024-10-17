@@ -1,0 +1,129 @@
+---
+title: 'Idomatic React'
+description: "How to write React that doesn't suck"
+date: 2024-10-16
+tags: ['react']
+---
+
+# When you work with a big enough react project,
+
+... eventually you're going to come across something written 7+ years ago.
+Class components, weird imperitive rendering logic, massive page components,
+or maybe even some ancient redux code from back when it was 95% boilerplate.
+
+> I don't know what good/bad React looks like
+-- my friend who mainly writes Golang, and maybe you idk
+
+I'm not a Library author, an open source maintainer, or [Dan Abramov](https://bsky.app/profile/did:plc:fpruhuo22xkm5o7ttr2ktxdo), but I've been
+writing React long enough to have some opinions about what sucks, and what doesn't.
+So here are my tips on writing Idiomatic React.
+
+## 1. Idiomatic, not Idiot Magnet
+> Idiomatic code refers to a style of programming that adheres to the conventions and best practices of a particular programming language or framework.
+-- thanks google
+
+Rule #1: If you don't know just [check the docs](https://react.dev/), my guy. I'm serious,
+the React docs are some of the best out there. They not only tell you what you can do,
+but also how you might want to do it.  I could honestly stop here and you'd be fine, but I'm
+not done ranting.
+
+## 2. Friends don't let friends useEffect
+
+[You probably don't need an effect](https://react.dev/learn/you-might-not-need-an-effect).
+Try to keep your logic inside of callbacks, and only use `useEffect` for *side effects*. If you
+_absolutely need one_, it might be worth breaking out into a custom hook or at the very least
+commenting your code to explain why you need it.
+
+## 3. Just make a subcomponent already
+
+Maybe this is just the repo's I'm swimming in, but I see these all the time:
+```tsx
+renderSomething() {
+  return (
+    <div>
+      Lets be real I'm probably using {props.someProp} that we didn't even pass into this function as an argument.
+    </div>
+  )
+}
+
+return (
+  <div>
+    But you'd never know that from looking at the render here.
+    {renderSomething()}
+  </div>
+)
+```
+This pattern is hot garbage. It _will technically render_ but it makes reading your component
+10x harder. If you're writing these, you're already 90% of the way to writing a new component anyway.
+Just do it! It will be easier to test, easier to read, and easier to maintain.
+
+## 4. Derived data isn't state!
+
+If the data you need is deep in some prop or needs to be mapped over or extracted, just do it
+in the body of the component. 90% of the time it's not even expensive data, and please
+for the love of JSX don't reach for `useEffect` or `useState` needlessly.
+
+## 5. It's 2024, use a query Library
+
+Yes, you can just use `fetch` directly in a `useEffect`, but DON'T. Inevitably you'll
+need to refetch, or add caching, or add a loading state. And the likelyhood you've done
+all that correctly is pretty low unless you're using a library that already did it for you.
+If you need data and you aren't using SSR, a query library will make your life SO much easier.
+
+## 6. Keep complex conditionals out of your render
+
+I literally saw an IIFE in a render today just so someone could write a switch statement.
+As soon as you need to compare more than a single boolean, you should just boil it down to
+a single variable and use that instead.
+
+```tsx
+// STAHP
+return (
+  <div>
+    {someBool && someVar !== 'some value' || someOtherBool && <FinallySomeJSX />}
+  </div>
+)
+```
+
+```tsx
+// easier to read, and you can name it something useful
+const showThing = someBool && someVar !== 'some value' || someOtherBool
+return (
+  <div>
+    {showThing && <NotNearlyAsBadJSX />}
+  </div>
+)
+```
+
+## 7. Write your own hooks
+
+Part of being "declarative" is keeping your logic in the right place. The component
+should be concerned with what is rendering, and less concerned with how it's being rendered.
+
+Try to abstract your business logic out of the component as much as possible.
+There's obviously [some rules](https://react.dev/learn/reusing-logic-with-custom-hooks) to writing custom hooks,
+but the short answer is that if you're using a lifecycle method, it's a hook.
+Is what you're doing just manipulating some prop? Write a util.  Does your logic need
+and effect (ARE YOU SURE? SEE RULE #2) or `useState`? Write a custom hook.
+
+This week I had to make a component with 4 different views based on asking for
+different price quotes and seeing which one was the cheapest. So I wrote a custom hook that
+called all 4 queries and returned the cheapest one.  Each individual query was a hook, and the
+one that called them all was a hook. This way my component only needed to run a single hook
+to get the mode it was in, the data it needed, and whether it was loading or not.
+You can test each individual part in isolation, and you're component isn't littered
+with a ton of variables it doesn't need in the render.
+
+## 8. Attack of the 50ft Component
+
+This harks back to #3 a little, but is a different symptom of the same problem
+When you _don't_ break up your components, you end up with giant functions.
+I've never met a component that NEEDs to take 10+ props, and if you find yourself
+writing one, you're probably doing too much. Break it up into smaller components.
+
+# tl;dr
+
+The biggest indicator of a good component is whether you can understand what it's doing
+quickly by looking at the render. If you're squinting to understand it, your subcomponents
+are either weirdly named, too big, or weighed down with too much logic.
+
