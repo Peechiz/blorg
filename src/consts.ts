@@ -31,7 +31,7 @@ export const NAV_LINKS: Link[] = [
 
 export const SOCIAL_LINKS: Link[] = [
   { href: 'https://github.com/peechiz', label: 'GitHub' },
-  { href: 'https://bsky.app/profile/peechiz.bsky.social', label: 'Bluesky' },
+  { href: 'https://bsky.app/profile/peech.dev', label: 'Bluesky' },
   { href: 'https://www.linkedin.com/in/chris-impicciche/', label: 'LinkedIn'},
   { href: 'cimpicci@gmail.com', label: 'Email' },
   { href: '/rss.xml', label: 'RSS' },
