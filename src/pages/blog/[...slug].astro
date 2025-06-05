@@ -10,14 +10,14 @@ import Layout from '@/layouts/Layout.astro'
 import { formatDate, readingTime } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 import { Image } from 'astro:assets'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import { type CollectionEntry, getCollection, render } from 'astro:content'
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog'))
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: post,
   }))
 }
@@ -27,28 +27,28 @@ const posts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 
-function getPostIndex(slug: string): number {
-  return posts.findIndex((post) => post.slug === slug)
+function getPostIndex(id: string): number {
+  return posts.findIndex((post) => post.id === id)
 }
 
-function getNextPost(slug: string): Props | null {
-  const postIndex = getPostIndex(slug)
+function getNextPost(id: string): Props | null {
+  const postIndex = getPostIndex(id)
   return postIndex !== -1 && postIndex < posts.length - 1
     ? posts[postIndex + 1]
     : null
 }
 
-function getPrevPost(slug: string): Props | null {
-  const postIndex = getPostIndex(slug)
+function getPrevPost(id: string): Props | null {
+  const postIndex = getPostIndex(id)
   return postIndex > 0 ? posts[postIndex - 1] : null
 }
 
-const currentPostSlug = Astro.params.slug
-const nextPost = getNextPost(currentPostSlug)
-const prevPost = getPrevPost(currentPostSlug)
+const currentPostId = Astro.params.slug
+const nextPost = getNextPost(currentPostId)
+const prevPost = getPrevPost(currentPostId)
 
 const post = Astro.props
-const { Content, headings } = await post.render()
+const { Content, headings } = await render(post)
 ---
 
 <Layout
@@ -88,7 +88,7 @@ const { Content, headings } = await post.render()
           <div class="flex items-center gap-2">
             <span>{formatDate(post.data.date)}</span>
             <Separator orientation="vertical" className="h-4" />
-            <span>{readingTime(post.body)}</span>
+            <span>{readingTime(post.body || '')}</span>
           </div>
         </div>
         <div class="mt-4 flex flex-wrap justify-center gap-2">
